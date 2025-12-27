@@ -12,12 +12,8 @@ app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
-// connect to DB only if MONGO_URI exists
-if (process.env.MONGO_URI) {
-  connectDB();
-}
+connectDB();
 
-// Routes
 app.get("/", (req, res) => {
   res.json({ message: "API running successfully 🚀" });
 });
