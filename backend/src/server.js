@@ -3,6 +3,8 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from './utils/db.js';
 import dbTestRoute from './routes/dbTest.route.js';
+import authRoutes from './routes/auth.route.js';
+
 
 
 dotenv.config();
@@ -13,6 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(dbTestRoute);
+app.use(authRoutes);
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
