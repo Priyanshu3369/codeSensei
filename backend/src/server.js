@@ -4,8 +4,7 @@ import dotenv from "dotenv";
 import connectDB from './utils/db.js';
 import dbTestRoute from './routes/dbTest.route.js';
 import authRoutes from './routes/auth.route.js';
-
-
+import protectedRoute from './routes/protected.route.js';
 
 dotenv.config();
 connectDB();
@@ -16,6 +15,7 @@ app.use(cors());
 app.use(express.json());
 app.use(dbTestRoute);
 app.use(authRoutes);
+app.use(protectedRoute);
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
