@@ -1,13 +1,20 @@
+// ⚠️ LOAD DOTENV FIRST - BEFORE ANY OTHER IMPORTS
+import dotenv from "dotenv";
+dotenv.config();
+
+// NOW import everything else
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import connectDB from './utils/db.js';
 import dbTestRoute from './routes/dbTest.route.js';
 import authRoutes from './routes/auth.route.js';
 import protectedRoute from './routes/protected.route.js';
 import reviewRoute from './routes/review.route.js';
 
-dotenv.config();
+// Verify environment variables loaded
+console.log('🔑 GEMINI_API_KEY loaded:', !!process.env.GEMINI_API_KEY);
+console.log('📦 MONGODB_URI loaded:', !!process.env.MONGO_URI);
+
 connectDB();
 
 const app = express();
