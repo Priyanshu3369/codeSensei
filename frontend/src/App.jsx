@@ -3,6 +3,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from "./utils/ProtectedRoute";
+import SubmitCode from './pages/SubmitCode';
 
 
 export default function App() {
@@ -16,6 +17,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/submit"
+          element={
+            <ProtectedRoute>
+              <SubmitCode />
             </ProtectedRoute>
           }
         />
