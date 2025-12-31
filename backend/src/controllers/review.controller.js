@@ -29,3 +29,16 @@ export const createReview = async (req, res) => {
     res.status(500).json({ message: 'AI review failed' });
   }
 };
+
+export const getUserReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find({ user: req.user.id })
+      .sort({ createdAt: -1 })
+      .select('-__v');
+
+    res.status(200).json(reviews);
+  } catch (error) {
+    console.error('Fetch Reviews Error:', error.message);
+    res.status(500).json({ message: 'Failed to fetch reviews' });
+  }
+};

@@ -4,7 +4,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from "./utils/ProtectedRoute";
 import SubmitCode from './pages/SubmitCode';
-
+import ReviewHistory from './pages/ReviewHistory';
+import ReviewDetail from './pages/ReviewDetail';
 
 export default function App() {
   return (
@@ -25,6 +26,22 @@ export default function App() {
           element={
             <ProtectedRoute>
               <SubmitCode />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reviews"
+          element={
+            <ProtectedRoute>
+              <ReviewHistory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reviews/:id"
+          element={
+            <ProtectedRoute>
+              <ReviewDetail />
             </ProtectedRoute>
           }
         />
