@@ -6,6 +6,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import SubmitCode from './pages/SubmitCode';
 import ReviewHistory from './pages/ReviewHistory';
 import ReviewDetail from './pages/ReviewDetail';
+import Settings from './pages/Settings';
 
 export default function App() {
   return (
@@ -42,6 +43,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <ReviewDetail />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           }
         />
