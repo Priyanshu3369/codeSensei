@@ -6,19 +6,23 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import SubmitCode from './pages/SubmitCode';
 import ReviewHistory from './pages/ReviewHistory';
 import ReviewDetail from './pages/ReviewDetail';
-import Settings from './pages/Settings';
+import AppLayout from './layouts/AppLayout';
+import Home from './pages/Home';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <AppLayout>
+                <Dashboard />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -26,7 +30,9 @@ export default function App() {
           path="/submit"
           element={
             <ProtectedRoute>
-              <SubmitCode />
+              <AppLayout>
+                <SubmitCode />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -34,7 +40,9 @@ export default function App() {
           path="/reviews"
           element={
             <ProtectedRoute>
-              <ReviewHistory />
+              <AppLayout>
+                <ReviewHistory />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
@@ -42,15 +50,9 @@ export default function App() {
           path="/reviews/:id"
           element={
             <ProtectedRoute>
-              <ReviewDetail />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
+              <AppLayout>
+                <ReviewDetail />
+              </AppLayout>
             </ProtectedRoute>
           }
         />
