@@ -41,7 +41,7 @@ export default function Home() {
     { value: "10K+", label: "Code Reviews" },
     { value: "99.9%", label: "Accuracy" },
     { value: "< 30s", label: "Avg. Review Time" },
-    { value: "50+", label: "Languages" }
+    { value: "4+", label: "Languages" }
   ];
 
   const codeLines = [

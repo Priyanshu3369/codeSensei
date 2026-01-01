@@ -34,8 +34,50 @@ export default function ReviewHistory() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="min-h-screen bg-black text-white pt-24 pb-12 relative overflow-hidden">
+      {/* Subtle Animated Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Soft Gradient Orbs */}
+        <div className="absolute inset-0">
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-500/8 rounded-full blur-3xl animate-[drift_25s_ease-in-out_infinite]"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-[600px] h-[600px] bg-emerald-500/6 rounded-full blur-3xl animate-[drift_30s_ease-in-out_infinite_reverse]"></div>
+        </div>
+
+        {/* Minimal Grid */}
+        <div className="absolute inset-0 opacity-5">
+          <div 
+            className="absolute inset-0" 
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(16, 185, 129, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.5) 1px, transparent 1px)
+              `,
+              backgroundSize: '100px 100px'
+            }}
+          ></div>
+        </div>
+
+        {/* Floating Particles */}
+        <div className="absolute inset-0 opacity-10">
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-emerald-400 rounded-full"
+              style={{
+                left: `${10 + (i * 12)}%`,
+                top: `${20 + (i * 8)}%`,
+                animation: `floatParticle ${15 + (i * 3)}s ease-in-out infinite`,
+                animationDelay: `${i * 0.8}s`
+              }}
+            ></div>
+          ))}
+        </div>
+
+        {/* Subtle Vignette */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/40"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Header */}
         <div className="mb-8 animate-[fadeInUp_0.6s_ease-out]">
           <div className="flex items-center justify-between mb-2">
@@ -170,6 +212,27 @@ export default function ReviewHistory() {
             opacity: 0;
           }
           to {
+            opacity: 1;
+          }
+        }
+        @keyframes drift {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+          }
+          33% {
+            transform: translate(30px, -30px) scale(1.05);
+          }
+          66% {
+            transform: translate(-30px, 30px) scale(0.95);
+          }
+        }
+        @keyframes floatParticle {
+          0%, 100% {
+            transform: translateY(0) translateX(0);
+            opacity: 0.3;
+          }
+          50% {
+            transform: translateY(-60px) translateX(20px);
             opacity: 1;
           }
         }

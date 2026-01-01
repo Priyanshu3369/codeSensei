@@ -95,8 +95,42 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="min-h-screen bg-black text-white pt-24 pb-12 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Large Gradient Orbs - Much Softer */}
+        <div className="absolute inset-0">
+          <div className="absolute -top-40 -left-40 w-[800px] h-[800px] bg-gradient-to-br from-emerald-500/8 via-emerald-500/4 to-transparent rounded-full blur-3xl animate-[float_25s_ease-in-out_infinite]"></div>
+          <div className="absolute top-1/3 -right-40 w-[700px] h-[700px] bg-gradient-to-bl from-emerald-500/6 via-emerald-500/3 to-transparent rounded-full blur-3xl animate-[float_30s_ease-in-out_infinite_reverse]"></div>
+          <div className="absolute -bottom-40 left-1/3 w-[750px] h-[750px] bg-gradient-to-tr from-emerald-500/7 via-emerald-500/3 to-transparent rounded-full blur-3xl animate-[float_28s_ease-in-out_infinite]"></div>
+        </div>
+        
+        {/* Grid Pattern - Very Subtle */}
+        <div className="absolute inset-0 opacity-8">
+          <div 
+            className="absolute inset-0" 
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px)
+              `,
+              backgroundSize: '80px 80px'
+            }}
+          ></div>
+        </div>
+        
+        {/* Accent Lines - Very Faint */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/30 to-transparent"></div>
+          <div className="absolute top-2/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent"></div>
+          <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent"></div>
+        </div>
+        
+        {/* Radial Gradient Overlay - Lighter */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-black/30 to-black/80"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Header */}
         <div className="mb-8 animate-[fadeInUp_0.6s_ease-out]">
           <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-white to-zinc-500 bg-clip-text text-transparent">
@@ -397,6 +431,25 @@ export default function Dashboard() {
         @keyframes slideIn {
           from {
             width: 0;
+          }
+        }
+        @keyframes float {
+          0%, 100% {
+            transform: translate(0, 0) rotate(0deg);
+          }
+          33% {
+            transform: translate(30px, -50px) rotate(5deg);
+          }
+          66% {
+            transform: translate(-20px, 30px) rotate(-5deg);
+          }
+        }
+        @keyframes scan {
+          0%, 100% {
+            transform: translateY(-100%);
+          }
+          50% {
+            transform: translateY(100%);
           }
         }
       `}</style>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import api from '../services/api';
 import { Code2, Send, FileCode, MessageSquare, CheckCircle, AlertCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 export default function SubmitCode() {
   const [form, setForm] = useState({
@@ -12,7 +11,6 @@ export default function SubmitCode() {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -33,14 +31,6 @@ export default function SubmitCode() {
       });
       setMessage(res.data.message);
       setForm({ code: '', language: 'javascript', description: '' });
-      // Redirect to review page
-      setTimeout(() => {
-        if (res.data.reviewId) {
-          navigate(`/reviews/${res.data.reviewId}`);
-        } else {
-          navigate('/reviews');
-        }
-      }, 800);
     } catch (err) {
       setError(err.response?.data?.message || 'Submission failed');
     } finally {
@@ -56,8 +46,52 @@ export default function SubmitCode() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24 pb-12">
-      <div className="max-w-5xl mx-auto px-6">
+    <div className="min-h-screen bg-black text-white pt-24 pb-12 relative overflow-hidden">
+      {/* Animated Code-Themed Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Binary Rain Effect - More Visible */}
+        <div className="absolute inset-0 opacity-15">
+          {[...Array(30)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute text-emerald-400 font-mono text-xs leading-relaxed"
+              style={{
+                left: `${(i * 3.33)}%`,
+                animation: `fall ${5 + (i % 5)}s linear infinite`,
+                animationDelay: `${i * 0.3}s`
+              }}
+            >
+              {Array(20).fill(0).map(() => Math.random() > 0.5 ? '1' : '0').join('\n')}
+            </div>
+          ))}
+        </div>
+
+        {/* Gradient Orbs - Brighter */}
+        <div className="absolute inset-0">
+          <div className="absolute -top-20 left-1/4 w-[700px] h-[700px] bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 rounded-full blur-3xl animate-[pulse_8s_ease-in-out_infinite]"></div>
+          <div className="absolute -bottom-20 right-1/4 w-[600px] h-[600px] bg-gradient-to-tl from-emerald-500/18 to-emerald-500/5 rounded-full blur-3xl animate-[pulse_10s_ease-in-out_infinite_reverse]"></div>
+        </div>
+        
+        {/* Code Brackets Pattern - More Visible */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-10 text-7xl text-emerald-500 font-mono animate-[float_15s_ease-in-out_infinite]">{'{ }'}</div>
+          <div className="absolute top-1/3 right-20 text-7xl text-emerald-400 font-mono animate-[float_18s_ease-in-out_infinite_reverse]">{'[ ]'}</div>
+          <div className="absolute bottom-20 left-1/3 text-7xl text-emerald-500 font-mono animate-[float_20s_ease-in-out_infinite]">{'< >'}</div>
+          <div className="absolute top-2/3 right-1/3 text-6xl text-emerald-400 font-mono animate-[float_16s_ease-in-out_infinite_reverse]">{'( )'}</div>
+        </div>
+
+        {/* Vertical Lines - More Visible */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald-500/60 to-transparent"></div>
+          <div className="absolute top-0 left-2/4 w-px h-full bg-gradient-to-b from-transparent via-emerald-500/50 to-transparent"></div>
+          <div className="absolute top-0 left-3/4 w-px h-full bg-gradient-to-b from-transparent via-emerald-500/60 to-transparent"></div>
+        </div>
+
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-black/20 to-black/50"></div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-6 relative z-10">
         {/* Header */}
         <div className="mb-8 animate-[fadeInUp_0.6s_ease-out]">
           <div className="flex items-center gap-3 mb-2">
@@ -82,7 +116,7 @@ export default function SubmitCode() {
               <p className="text-red-300 text-sm">{error}</p>
             </div>
           )}
-
+          
           {message && (
             <div className="mb-6 p-4 bg-emerald-900/20 border border-emerald-500/50 rounded-lg flex items-start gap-3 animate-[fadeIn_0.3s_ease-out]">
               <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -102,10 +136,11 @@ export default function SubmitCode() {
                   key={lang.value}
                   type="button"
                   onClick={() => setForm({ ...form, language: lang.value })}
-                  className={`p-4 rounded-lg border transition-all duration-300 hover:scale-105 ${form.language === lang.value
+                  className={`p-4 rounded-lg border transition-all duration-300 hover:scale-105 ${
+                    form.language === lang.value
                       ? 'bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border-emerald-500/50 shadow-lg shadow-emerald-900/20'
                       : 'bg-zinc-800/30 border-zinc-700 hover:border-zinc-600'
-                    }`}
+                  }`}
                 >
                   <div className="text-2xl mb-1">{lang.icon}</div>
                   <div className="text-sm font-medium">{lang.label}</div>
@@ -200,7 +235,41 @@ function calculateTotal(items) {
             opacity: 1;
           }
         }
+        @keyframes fall {
+          0% {
+            transform: translateY(-100%);
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.3;
+          }
+          90% {
+            opacity: 0.3;
+          }
+          100% {
+            transform: translateY(100vh);
+            opacity: 0;
+          }
+        }
+        @keyframes pulse {
+          0%, 100% {
+            opacity: 0.15;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.25;
+            transform: scale(1.1);
+          }
+        }
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0) rotate(0deg);
+          }
+          50% {
+            transform: translateY(-30px) rotate(5deg);
+          }
+        }
       `}</style>
     </div>
-  );
+  );r
 }
