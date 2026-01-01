@@ -1,1 +1,1 @@
-# codeSensei
+# Codezy

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import api from '../services/api';
+import { Code2, Send, FileCode, MessageSquare, CheckCircle, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function SubmitCode() {
   const [form, setForm] = useState({
@@ -9,6 +11,8 @@ export default function SubmitCode() {
   });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -18,6 +22,7 @@ export default function SubmitCode() {
     e.preventDefault();
     setError('');
     setMessage('');
+    setIsSubmitting(true);
 
     try {
       const token = localStorage.getItem('token');
@@ -28,54 +33,174 @@ export default function SubmitCode() {
       });
       setMessage(res.data.message);
       setForm({ code: '', language: 'javascript', description: '' });
+      // Redirect to review page
+      setTimeout(() => {
+        if (res.data.reviewId) {
+          navigate(`/reviews/${res.data.reviewId}`);
+        } else {
+          navigate('/reviews');
+        }
+      }, 800);
     } catch (err) {
       setError(err.response?.data?.message || 'Submission failed');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
+  const languages = [
+    { value: 'javascript', label: 'JavaScript', icon: '📜' },
+    { value: 'python', label: 'Python', icon: '🐍' },
+    { value: 'java', label: 'Java', icon: '☕' },
+    { value: 'cpp', label: 'C++', icon: '⚡' }
+  ];
+
   return (
-    <div className="min-h-screen p-6 bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-3xl mx-auto bg-white p-6 rounded shadow"
-      >
-        <h2 className="text-xl font-bold mb-4">Submit Code for Review</h2>
+    <div className="min-h-screen bg-black text-white pt-24 pb-12">
+      <div className="max-w-5xl mx-auto px-6">
+        {/* Header */}
+        <div className="mb-8 animate-[fadeInUp_0.6s_ease-out]">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-teal-500/20 rounded-xl flex items-center justify-center">
+              <Code2 className="w-6 h-6 text-emerald-400" />
+            </div>
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-zinc-500 bg-clip-text text-transparent">
+              Submit Code for Review
+            </h1>
+          </div>
+          <p className="text-zinc-400 ml-15">Get instant AI-powered feedback on your code quality, security, and performance</p>
+        </div>
 
-        {error && <p className="text-red-500 mb-2">{error}</p>}
-        {message && <p className="text-green-600 mb-2">{message}</p>}
-
-        <select
-          name="language"
-          className="border p-2 w-full mb-3"
-          value={form.language}
-          onChange={handleChange}
+        <div
+          className="bg-zinc-900/50 backdrop-blur-sm border border-zinc-800 rounded-xl p-8 hover:border-zinc-700 transition-all duration-300"
+          style={{ animation: 'fadeInUp 0.8s ease-out 0.2s both' }}
         >
-          <option value="javascript">JavaScript</option>
-          <option value="python">Python</option>
-          <option value="java">Java</option>
-          <option value="cpp">C++</option>
-        </select>
+          {/* Success/Error Messages */}
+          {error && (
+            <div className="mb-6 p-4 bg-red-900/20 border border-red-500/50 rounded-lg flex items-start gap-3 animate-[fadeIn_0.3s_ease-out]">
+              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+              <p className="text-red-300 text-sm">{error}</p>
+            </div>
+          )}
 
-        <textarea
-          name="code"
-          placeholder="Paste your code here..."
-          className="border p-2 w-full h-40 mb-3 font-mono"
-          value={form.code}
-          onChange={handleChange}
-        />
+          {message && (
+            <div className="mb-6 p-4 bg-emerald-900/20 border border-emerald-500/50 rounded-lg flex items-start gap-3 animate-[fadeIn_0.3s_ease-out]">
+              <CheckCircle className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+              <p className="text-emerald-300 text-sm">{message}</p>
+            </div>
+          )}
 
-        <textarea
-          name="description"
-          placeholder="Optional description"
-          className="border p-2 w-full mb-4"
-          value={form.description}
-          onChange={handleChange}
-        />
+          {/* Language Selector */}
+          <div className="mb-6">
+            <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
+              <FileCode className="w-4 h-4 text-emerald-400" />
+              Programming Language
+            </label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {languages.map((lang) => (
+                <button
+                  key={lang.value}
+                  type="button"
+                  onClick={() => setForm({ ...form, language: lang.value })}
+                  className={`p-4 rounded-lg border transition-all duration-300 hover:scale-105 ${form.language === lang.value
+                      ? 'bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border-emerald-500/50 shadow-lg shadow-emerald-900/20'
+                      : 'bg-zinc-800/30 border-zinc-700 hover:border-zinc-600'
+                    }`}
+                >
+                  <div className="text-2xl mb-1">{lang.icon}</div>
+                  <div className="text-sm font-medium">{lang.label}</div>
+                </button>
+              ))}
+            </div>
+          </div>
 
-        <button className="bg-blue-600 text-white px-4 py-2 rounded">
-          Submit for Review
-        </button>
-      </form>
+          {/* Code Input */}
+          <div className="mb-6">
+            <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
+              <Code2 className="w-4 h-4 text-emerald-400" />
+              Your Code
+            </label>
+            <div className="relative">
+              <textarea
+                name="code"
+                placeholder="Paste your code here...
+
+// Example:
+function calculateTotal(items) {
+  return items.reduce((sum, item) => sum + item.price, 0);
+}"
+                className="w-full h-64 bg-zinc-950/50 border border-zinc-700 rounded-lg p-4 font-mono text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all resize-none"
+                value={form.code}
+                onChange={handleChange}
+                required
+              />
+              <div className="absolute bottom-3 right-3 text-xs text-zinc-600">
+                {form.code.length} characters
+              </div>
+            </div>
+          </div>
+
+          {/* Description Input */}
+          <div className="mb-8">
+            <label className="flex items-center gap-2 text-sm font-medium text-zinc-300 mb-3">
+              <MessageSquare className="w-4 h-4 text-emerald-400" />
+              Description <span className="text-zinc-600 text-xs ml-1">(Optional)</span>
+            </label>
+            <textarea
+              name="description"
+              placeholder="Add any context or specific questions about your code..."
+              className="w-full h-24 bg-zinc-950/50 border border-zinc-700 rounded-lg p-4 text-sm text-zinc-100 placeholder-zinc-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all resize-none"
+              value={form.description}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Submit Button */}
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting || !form.code.trim()}
+            className="group w-full flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 disabled:from-zinc-700 disabled:to-zinc-700 text-white px-6 py-4 rounded-lg font-medium transition-all duration-300 hover:scale-[1.02] disabled:scale-100 disabled:cursor-not-allowed shadow-lg shadow-emerald-900/50 hover:shadow-emerald-900/70 disabled:shadow-none"
+          >
+            {isSubmitting ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Analyzing Code...</span>
+              </>
+            ) : (
+              <>
+                <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <span>Submit for Review</span>
+              </>
+            )}
+          </button>
+
+          {/* Info Text */}
+          <p className="text-xs text-zinc-500 text-center mt-4">
+            Your code will be analyzed by our AI for quality, security, performance, and best practices
+          </p>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 }
