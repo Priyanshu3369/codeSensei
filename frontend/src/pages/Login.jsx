@@ -115,7 +115,7 @@ export default function Login() {
               <Code2 className="w-7 h-7 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-white">Codezy</h1>
+              <h1 className="text-2xl font-bold text-white">CodSenSei</h1>
               <div className="flex items-center gap-1.5 text-xs text-zinc-500">
                 <Sparkles className="w-3 h-3 text-emerald-400" />
                 <span>Powered by Gemini</span>

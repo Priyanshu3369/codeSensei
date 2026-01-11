@@ -40,7 +40,7 @@ export default function Navbar() {
             </div>
             <Link to="/">
               <span className="text-xl font-bold bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent cursor-pointer">
-                Codezy
+                CodSenSei
               </span>
             </Link>
           </Link>

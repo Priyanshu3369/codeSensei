@@ -14,7 +14,7 @@ export default function Footer() {
             </div>
             <div className="text-center md:text-left">
               <div className="font-bold text-white">
-                Codezy
+                CodSenSei
               </div>
               <div className="flex items-center gap-1.5 text-xs text-zinc-500">
                 <Sparkles className="w-3 h-3 text-emerald-400" />
@@ -63,7 +63,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-6 pt-6 border-t border-zinc-800/50 text-center">
           <p className="text-sm text-zinc-500">
-            © {new Date().getFullYear()} Codezy. All rights reserved.
+            © {new Date().getFullYear()} CodSenSei. All rights reserved.
           </p>
         </div>
       </div>
