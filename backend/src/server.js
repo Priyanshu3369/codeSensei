@@ -18,6 +18,7 @@ connectDB();
 
 const app = express();
 
+// ✅ FIXED: Apply CORS globally instead of using app.options
 app.use(cors({
   origin: [
     "http://localhost:5173",
@@ -26,9 +27,6 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true
 }));
-
-// ✅ FIXED HERE
-app.options("/*", cors());
 
 app.use(express.json());
 
@@ -42,7 +40,7 @@ app.get("/health", (req, res) => {
 });
 
 // ✅ SAFE CATCH-ALL
-app.get("/*", (req, res) => {
+app.get("*", (req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
