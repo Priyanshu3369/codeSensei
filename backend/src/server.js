@@ -39,8 +39,8 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "OK" });
 });
 
-// ✅ SAFE CATCH-ALL
-app.get("*", (req, res) => {
+// ✅ 404 handler - must be last
+app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
