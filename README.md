@@ -1,7 +1,7 @@
-# 🚀 CodeSensei — AI Powered Code Review Platform
+# 🚀 CodeSensei - AI Powered Code Review Platform
 
 CodeSensei is a modern, full-stack web application that provides **AI-powered code reviews** using **Google Gemini**.  
-It helps developers instantly analyze code quality, readability, performance, and best practices — all in one place.
+It helps developers instantly analyze code quality, readability, performance, and best practices - all in one place.
 
 🌐 **Live Demo:** https://code-sensei-ten.vercel.app/
 
